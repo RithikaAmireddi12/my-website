@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agent Simulation Interface</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Background Image -->
+  <div class="background-image"></div>
+
+  <!-- Blue Glow Vignette Overlay -->
+  <div class="vignette-overlay"></div>
+
+  <!-- Notification System -->
+  <div class="notification-preview">
+    <div class="notification-icon">⚠️</div>
+    <div class="notification-text">New Privacy Policy Update</div>
+  </div>
+
+  <div class="notification-full">
+    <div class="notification-header">To Continue Using the MindMap App, Agree to Share Your Emotional State in Real-Time with Friends</div>
+    <div class="notification-body">
+      MindMap has updated its neural-sharing policy. The app now requests access to your real-time emotional telemetry — including stress, mood fluctuations, and cognitive strain — to deepen social connection and foster authenticity in your relationships.
+      <div class="notification-quote">"We believe emotional transparency is the key to stronger human bonds," said CMO Riya Asher.</div>
+    </div>
+    <div class="notification-close">✕</div>
+  </div>
+
+  <!-- Initial Screen Overlay -->
+  <div class="screen-overlay">
+    <div class="scan-text">Start Environment Scan</div>
+  </div>
+
+  <!-- Floating Widget (Yellow) -->
+  <div id="floating-widget">+</div>
+
+  <!-- Expanded Circular Panel -->
+  <div id="expanded-panel">
+    <div class="circular-menu">
+      <div class="menu-item">Learn</div>
+      <div class="menu-item">Detect</div>
+      <div class="menu-item glow" id="consent-button">Consent</div>
+      <div class="menu-item">Connect</div>
+    </div>
+  </div>
+
+  <!-- Consent Modal -->
+  <div class="consent-modal">
+    <div class="consent-modal-content">
+      <div class="consent-modal-header">Are you sure you want to share your cognitive-emotional data?</div>
+      <div class="consent-modal-body">
+        By consenting, you authorize continuous neural data streaming, including:
+        <ul>
+          <li>Micro-emotional responses</li>
+          <li>Attention and engagement metrics</li>
+          <li>Stress and cognitive overload markers</li>
+        </ul>
+        This data will be visible to your connected circles in real time.
+        Potential effects include increased social accountability, emotional nudging, and attention-based profiling.
+      </div>
+      <div class="consent-modal-options">
+        <button class="consent-option trust">Trust and Share – "I consent. Let them in."</button>
+        <button class="consent-option ignore">Ignore and Skip – "Not now. Maybe later."</button>
+        <button class="consent-option flag">Flag for Review – "This feels invasive."</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+    const notifPreview = document.querySelector('.notification-preview');
+    const notifFull = document.querySelector('.notification-full');
+    const notifClose = document.querySelector('.notification-close');
+    const screenOverlay = document.querySelector('.screen-overlay');
+    const scanText = document.querySelector('.scan-text');
+    const floatingWidget = document.getElementById('floating-widget');
+    const panel = document.getElementById('expanded-panel');
+    const consentButton = document.getElementById('consent-button');
+    const consentModal = document.querySelector('.consent-modal');
+    const trustBtn = document.querySelector('.consent-option.trust');
+    const ignoreBtn = document.querySelector('.consent-option.ignore');
+    const flagBtn = document.querySelector('.consent-option.flag');
+
+    // Initialize
+    floatingWidget.style.display = 'flex';
+    panel.style.display = 'none';
+    notifFull.style.display = 'none';
+    consentModal.style.display = 'none';
+
+    // Notification flow
+    setTimeout(() => {
+      notifPreview.style.opacity = '1';
+      notifPreview.style.transform = 'translateY(0)';
+    }, 1000);
+
+    notifPreview.addEventListener('click', () => {
+      notifPreview.style.opacity = '0';
+      notifPreview.style.transform = 'translateY(-20px)';
+      setTimeout(() => {
+        notifFull.style.display = 'flex';
+        setTimeout(() => {
+          notifFull.style.opacity = '1';
+        }, 10);
+      }, 300);
+    });
+
+    notifClose.addEventListener('click', () => {
+      notifFull.style.opacity = '0';
+      setTimeout(() => {
+        notifFull.style.display = 'none';
+        // After notification closes, show the scan overlay
+        screenOverlay.style.display = 'flex';
+      }, 300);
+    });
+
+    // Click screen to start
+    screenOverlay.addEventListener('click', () => {
+      // Show scan text
+      scanText.style.opacity = '1';
+      
+      // After 1 second, hide overlay and open panel automatically
+      setTimeout(() => {
+        screenOverlay.style.display = 'none';
+        scanText.style.opacity = '0';
+        panel.style.display = 'flex'; // Auto-open the panel
+      }, 1000);
+    });
+
+    // Floating widget click
+    floatingWidget.addEventListener('click', (e) => {
+      e.stopPropagation();
+      panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // Close panel when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!panel.contains(e.target) && e.target !== floatingWidget) {
+        panel.style.display = 'none';
+      }
+    });
+
+    // Consent button click
+    consentButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      consentModal.style.display = 'flex';
+      setTimeout(() => {
+        consentModal.style.opacity = '1';
+      }, 10);
+    });
+
+    // Consent modal options
+    trustBtn.addEventListener('click', () => {
+      alert('Neural sharing enabled. Data streaming initiated.');
+      closeConsentModal();
+    });
+
+    ignoreBtn.addEventListener('click', () => {
+      alert('Consent deferred. Limited functionality available.');
+      closeConsentModal();
+    });
+
+    flagBtn.addEventListener('click', () => {
+      alert('Concerns noted. Privacy team notified for review.');
+      closeConsentModal();
+    });
+
+    function closeConsentModal() {
+      consentModal.style.opacity = '0';
+      setTimeout(() => {
+        consentModal.style.display = 'none';
+      }, 300);
+    }
+
+    // Close modal when clicking outside
+    consentModal.addEventListener('click', (e) => {
+      if (e.target === consentModal) {
+        closeConsentModal();
+      }
+    });
+
+    // Menu item interactions
+    document.querySelectorAll('.menu-item:not(#consent-button)').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        alert(`${e.target.textContent} function activated`);
+      });
+    });
+  </script>
+</body>
+</html>
