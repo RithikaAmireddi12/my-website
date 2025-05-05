@@ -77,6 +77,14 @@ body {
   font-size: 14px;
 }
 
+.notification-preview .click-here {
+  font-size: 0.8em;
+  color: #ccc;
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+}
+
 .notification-full {
   position: fixed;
   top: 0;
@@ -364,4 +372,46 @@ body {
 .consent-option:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the startup screen */
+#startup-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  opacity: 1;
+  z-index: 2000; /* Above all other elements initially */
+  transition: opacity 1s ease-in-out; /* For the fade-out effect */
+}
+
+/* Style for the "click here" text */
+.notification-preview .click-here {
+  font-size: 0.8em;
+  color: #ccc;
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+}
+
+/* Style for the documentation button */
+#documentation-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure it's above other elements */
 }

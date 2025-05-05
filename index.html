@@ -5,18 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agent Simulation Interface</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Style for the startup screen */
+    #startup-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+      opacity: 1;
+      z-index: 2000; /* Above all other elements initially */
+      transition: opacity 1s ease-in-out; /* For the fade-out effect */
+    }
+
+    /* Style for the "click here" text */
+    .notification-preview .click-here {
+      font-size: 0.8em;
+      color: #ccc;
+      position: absolute;
+      bottom: 5px;
+      right: 10px;
+    }
+  </style>
 </head>
 <body>
-  <!-- Background Image -->
+  <div id="startup-screen">Welcome to the Future</div>
+
   <div class="background-image"></div>
 
-  <!-- Blue Glow Vignette Overlay -->
   <div class="vignette-overlay"></div>
 
-  <!-- Notification System -->
   <div class="notification-preview">
     <div class="notification-icon">⚠️</div>
     <div class="notification-text">New Privacy Policy Update</div>
+    <span class="click-here">Click here</span>
   </div>
 
   <div class="notification-full">
@@ -28,15 +56,12 @@
     <div class="notification-close">✕</div>
   </div>
 
-  <!-- Initial Screen Overlay -->
   <div class="screen-overlay">
     <div class="scan-text">Start Environment Scan</div>
   </div>
 
-  <!-- Floating Widget (Yellow) -->
   <div id="floating-widget">+</div>
 
-  <!-- Expanded Circular Panel -->
   <div id="expanded-panel">
     <div class="circular-menu">
       <div class="menu-item">Learn</div>
@@ -46,7 +71,6 @@
     </div>
   </div>
 
-  <!-- Consent Modal -->
   <div class="consent-modal">
     <div class="consent-modal-content">
       <div class="consent-modal-header">Are you sure you want to share your cognitive-emotional data?</div>
@@ -68,125 +92,10 @@
     </div>
   </div>
 
-  <script>
-    // Elements
-    const notifPreview = document.querySelector('.notification-preview');
-    const notifFull = document.querySelector('.notification-full');
-    const notifClose = document.querySelector('.notification-close');
-    const screenOverlay = document.querySelector('.screen-overlay');
-    const scanText = document.querySelector('.scan-text');
-    const floatingWidget = document.getElementById('floating-widget');
-    const panel = document.getElementById('expanded-panel');
-    const consentButton = document.getElementById('consent-button');
-    const consentModal = document.querySelector('.consent-modal');
-    const trustBtn = document.querySelector('.consent-option.trust');
-    const ignoreBtn = document.querySelector('.consent-option.ignore');
-    const flagBtn = document.querySelector('.consent-option.flag');
+  <a href="documentation.html" title="Link to Documentation" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <button id="documentation-button">Docs</button>
+  </a>
 
-    // Initialize
-    floatingWidget.style.display = 'flex';
-    panel.style.display = 'none';
-    notifFull.style.display = 'none';
-    consentModal.style.display = 'none';
-
-    // Notification flow
-    setTimeout(() => {
-      notifPreview.style.opacity = '1';
-      notifPreview.style.transform = 'translateY(0)';
-    }, 1000);
-
-    notifPreview.addEventListener('click', () => {
-      notifPreview.style.opacity = '0';
-      notifPreview.style.transform = 'translateY(-20px)';
-      setTimeout(() => {
-        notifFull.style.display = 'flex';
-        setTimeout(() => {
-          notifFull.style.opacity = '1';
-        }, 10);
-      }, 300);
-    });
-
-    notifClose.addEventListener('click', () => {
-      notifFull.style.opacity = '0';
-      setTimeout(() => {
-        notifFull.style.display = 'none';
-        // After notification closes, show the scan overlay
-        screenOverlay.style.display = 'flex';
-      }, 300);
-    });
-
-    // Click screen to start
-    screenOverlay.addEventListener('click', () => {
-      // Show scan text
-      scanText.style.opacity = '1';
-      
-      // After 1 second, hide overlay and open panel automatically
-      setTimeout(() => {
-        screenOverlay.style.display = 'none';
-        scanText.style.opacity = '0';
-        panel.style.display = 'flex'; // Auto-open the panel
-      }, 1000);
-    });
-
-    // Floating widget click
-    floatingWidget.addEventListener('click', (e) => {
-      e.stopPropagation();
-      panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
-    });
-
-    // Close panel when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!panel.contains(e.target) && e.target !== floatingWidget) {
-        panel.style.display = 'none';
-      }
-    });
-
-    // Consent button click
-    consentButton.addEventListener('click', (e) => {
-      e.stopPropagation();
-      consentModal.style.display = 'flex';
-      setTimeout(() => {
-        consentModal.style.opacity = '1';
-      }, 10);
-    });
-
-    // Consent modal options
-    trustBtn.addEventListener('click', () => {
-      alert('Neural sharing enabled. Data streaming initiated.');
-      closeConsentModal();
-    });
-
-    ignoreBtn.addEventListener('click', () => {
-      alert('Consent deferred. Limited functionality available.');
-      closeConsentModal();
-    });
-
-    flagBtn.addEventListener('click', () => {
-      alert('Concerns noted. Privacy team notified for review.');
-      closeConsentModal();
-    });
-
-    function closeConsentModal() {
-      consentModal.style.opacity = '0';
-      setTimeout(() => {
-        consentModal.style.display = 'none';
-      }, 300);
-    }
-
-    // Close modal when clicking outside
-    consentModal.addEventListener('click', (e) => {
-      if (e.target === consentModal) {
-        closeConsentModal();
-      }
-    });
-
-    // Menu item interactions
-    document.querySelectorAll('.menu-item:not(#consent-button)').forEach(item => {
-      item.addEventListener('click', (e) => {
-        e.stopPropagation();
-        alert(`${e.target.textContent} function activated`);
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
